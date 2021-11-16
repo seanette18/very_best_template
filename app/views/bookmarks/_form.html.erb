@@ -1,0 +1,94 @@
+<% was_validated = bookmark.errors.any? %>
+
+<%= form_with(model: bookmark, local: true, novalidate: true, class: "mb-3") do |f| %>
+  <div class="form-group">
+    <% dish_class = "form-control" %>
+    <% dish_was_invalid = bookmark.errors.include?(:dish) %>
+
+    <% if was_validated %>
+      <% if dish_was_invalid %>
+        <% dish_class << " is-invalid" %>
+      <% else %>
+        <% dish_class << " is-valid" %>
+      <% end %>
+    <% end %>
+
+    <%= f.label :dish_id %>
+    <%= f.collection_select :dish_id, Dish.all, :id, :to_s, {}, class: "form-control" %>
+    <% if dish_was_invalid %>
+      <% bookmark.errors.full_messages_for(:dish).each do |message| %>
+        <div class="invalid-feedback d-flex">
+          <%= message %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <% venue_class = "form-control" %>
+    <% venue_was_invalid = bookmark.errors.include?(:venue) %>
+
+    <% if was_validated %>
+      <% if venue_was_invalid %>
+        <% venue_class << " is-invalid" %>
+      <% else %>
+        <% venue_class << " is-valid" %>
+      <% end %>
+    <% end %>
+
+    <%= f.label :venue_id %>
+    <%= f.collection_select :venue_id, Venue.all, :id, :to_s, {}, class: "form-control" %>
+    <% if venue_was_invalid %>
+      <% bookmark.errors.full_messages_for(:venue).each do |message| %>
+        <div class="invalid-feedback d-flex">
+          <%= message %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <div class="form-group">
+    <% note_class = "form-control" %>
+    <% note_was_invalid = bookmark.errors.include?(:note) %>
+
+    <% if was_validated %>
+      <% if note_was_invalid %>
+        <% note_class << " is-invalid" %>
+      <% else %>
+        <% note_class << " is-valid" %>
+      <% end %>
+    <% end %>
+
+    <%= f.label :notes %>
+    <%= f.text_area :notes, class: note_class, placeholder: "Enter note" %>
+    <% if note_was_invalid %>
+      <% bookmark.errors.full_messages_for(:note).each do |message| %>
+        <div class="invalid-feedback d-flex">
+          <%= message %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <% image_class = "form-control" %>
+    <% image_was_invalid = bookmark.errors.include?(:image) %>
+
+    <% if was_validated %>
+      <% if image_was_invalid %>
+        <% image_class << " is-invalid" %>
+      <% else %>
+        <% image_class << " is-valid" %>
+      <% end %>
+    <% end %>
+
+    <%= f.label :image %>
+    <%= f.file_field :image, class: "form-control" %>
+    <% if image_was_invalid %>
+      <% bookmark.errors.full_messages_for(:image).each do |message| %>
+        <div class="invalid-feedback d-flex">
+          <%= message %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <%= f.button class: "btn btn-outline-secondary btn-block" %>
+<% end %>
